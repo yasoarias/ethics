@@ -12,8 +12,8 @@ A web application for searching and exploring ethics topics from GE11 (ETHICS) s
 ## Technology Stack
 
 - Frontend: Vue.js 3 with Vite
-- Backend: Laravel 10
-- Database: SQLite (default)
+- Backend: Node
+- Database: MySQL (default)
 
 ## Prerequisites
 
@@ -24,38 +24,21 @@ A web application for searching and exploring ethics topics from GE11 (ETHICS) s
 
 ## Setup Instructions
 
-### Backend Setup
-
-1. Navigate to the backend directory:
+1. Install dependencies:
    ```bash
-   cd backend
+   npm install
    ```
 
-2. Install PHP dependencies:
-   ```bash
-   composer install
+2. Create a `.env` file in the root directory with the following variables:
+   ```
+   PORT=3000
+   DATABASE_URL=your_database_url
    ```
 
-3. Copy the environment file:
+3. Start the development server:
    ```bash
-   cp .env.example .env
+   npm start
    ```
-
-4. Generate application key:
-   ```bash
-   php artisan key:generate
-   ```
-
-5. Run database migrations:
-   ```bash
-   php artisan migrate
-   ```
-
-6. Start the Laravel development server:
-   ```bash
-   php artisan serve
-   ```
-
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
@@ -89,6 +72,20 @@ A web application for searching and exploring ethics topics from GE11 (ETHICS) s
 - `PUT /api/topics/{id}` - Update a topic
 - `DELETE /api/topics/{id}` - Delete a topic
 
+## Development
+
+To run the server in development mode with hot reloading:
+```bash
+npm run dev
+```
+
+## Testing
+
+To run the test suite:
+```bash
+npm test
+```
+
 ## Contributing
 
 1. Fork the repository
@@ -96,3 +93,4 @@ A web application for searching and exploring ethics topics from GE11 (ETHICS) s
 3. Commit your changes
 4. Push to the branch
 5. Create a new Pull Request 
+
