@@ -1,4 +1,4 @@
-# GE11 Ethics Chatbot
+# GE11 Ethics Search Engine
 
 A web application for searching and exploring ethics topics from GE11 (ETHICS) subject.
 
