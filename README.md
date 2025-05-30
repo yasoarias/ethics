@@ -17,8 +17,6 @@ A web application for searching and exploring ethics topics from GE11 (ETHICS) s
 
 ## Prerequisites
 
-- PHP 8.1 or higher
-- Composer
 - Node.js 16 or higher
 - npm
 
