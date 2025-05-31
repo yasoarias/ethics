@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const { filter } = require('./filterSearchMiddleware');
 const app = express();
 const port = 3000;
 
@@ -10,6 +11,7 @@ const GOOGLE_CSE_ID = '36cb1d55c6f38470a';
 
 app.use(cors());
 app.use(express.json());
+app.use(filter);
 
 app.get('/', (req, res) => {
   res.send('Backend is running!');
