@@ -20,23 +20,6 @@ A web application for searching and exploring ethics topics from GE11 (ETHICS) s
 - Node.js 16 or higher
 - npm
 
-## Setup Instructions
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Create a `.env` file in the root directory with the following variables:
-   ```
-   PORT=3000
-   DATABASE_URL=your_database_url
-   ```
-
-3. Start the development server:
-   ```bash
-   npm start
-   ```
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
@@ -52,6 +35,28 @@ A web application for searching and exploring ethics topics from GE11 (ETHICS) s
 3. Start the development server:
    ```bash
    npm run dev
+   ```
+
+### Backend Setup
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Install Node.js dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create `.env` file on `ethics/backend/.env`:
+   ```bash
+      OPENAI_API_KEY=<secret-key><contact developers for the key>
+   ```
+
+3. Start the development server:
+   ```bash
+   node index.js
    ```
 
 ## Usage
