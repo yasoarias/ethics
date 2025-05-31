@@ -12,6 +12,9 @@
         </svg>
       </button>
     </div>
+    <div v-if="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
     <div class="results-section">
       <div v-if="results.length > 0">
         <div v-for="result in results" :key="result.url" class="search-result">
@@ -31,6 +34,7 @@ import axios from 'axios';
 
 const searchQuery = ref('');
 const results = ref([]);
+const errorMessage = ref('');
 
 const performSearch = async () => {
   if (!searchQuery.value) return;
@@ -39,6 +43,16 @@ const performSearch = async () => {
     const response = await axios.post('http://localhost:3000/search', {
       query: searchQuery.value,
     });
+
+    console.log(response.data.result)
+   
+    if(response.data.result?.invalidSearch) {
+      errorMessage.value = 'Invalid search. Search must be related to ethics.';
+      results.value = [];
+      return;
+    }
+
+    errorMessage.value = ''
     results.value = response.data.results;
   } catch (error) {
     console.error('Error fetching search results:', error);
