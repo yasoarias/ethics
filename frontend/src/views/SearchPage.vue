@@ -12,54 +12,65 @@
         </svg>
       </button>
     </div>
-    <div v-if="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
     <div class="results-section">
-      <div v-if="results.length > 0">
-        <div v-for="result in results" :key="result.url" class="search-result">
-          <h3><a :href="result.url" target="_blank">{{ result.title }}</a></h3>
-          <p>{{ result.snippet }}</p>
-          <a :href="result.url" target="_blank">{{ result.url }}</a>
-        </div>
+      <div v-if="results">
+        <p class="result-text" v-html="formattedResults">
+        </p>
       </div>
-      <p v-else>Search results will appear here.</p>
+      <div v-else>
+        <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+        </div>
+        <p v-else>
+          <span v-if="loadingState">Loading...</span>
+          <span v-else>Search results will appear here.</span>
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
 
 const searchQuery = ref('');
-const results = ref([]);
+const results = ref("");
 const errorMessage = ref('');
+const loadingState = ref(false);
+
+const formattedResults = computed(() => {
+  const text = results.value || "";
+  return text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/###(.*?)/g, "<b style='font-size: 1.5rem'>$1</b>");
+});
 
 const performSearch = async () => {
   if (!searchQuery.value) return;
+
+  loadingState.value = true;
+  results.value = "";
+  errorMessage.value = "";
 
   try {
     const response = await axios.post('http://localhost:3000/search', {
       query: searchQuery.value,
     });
 
-    console.log(response.data.result)
-   
-    if(response.data.result?.invalidSearch) {
+    if (response.data.result?.invalidSearch) {
       errorMessage.value = 'Invalid search. Search must be related to ethics.';
-      results.value = [];
+      results.value = "Invalid search. Search must be related to ethics.";
       return;
     }
 
-    errorMessage.value = ''
-    results.value = response.data.results;
+    errorMessage.value = '';
+    results.value = response.data.result;
   } catch (error) {
     console.error('Error fetching search results:', error);
     results.value = [];
   }
 };
 </script>
+
 
 <style scoped>
 .search-page-container {
