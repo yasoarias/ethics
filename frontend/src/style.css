@@ -82,6 +82,15 @@ button:focus-visible {
   text-align: center;
 }
 
+.error-message {
+  color: rgb(249, 27, 27);
+}
+
+.result-text {
+  white-space-collapse: preserve-breaks;
+  text-align: left;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
