@@ -4,10 +4,12 @@ const cors = require('cors');
 const { filter } = require('./filterSearchMiddleware');
 const app = express();
 const port = 3000;
+const { OpenAI } = require('openai');
+require('dotenv').config();
 
-// Replace with your actual Google API Key and Custom Search Engine ID
-const GOOGLE_API_KEY = 'AIzaSyCkAfhExYcwvZK4oCVWK53AyBCVQP1Kjko';
-const GOOGLE_CSE_ID = '36cb1d55c6f38470a';
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+})
 
 app.use(cors());
 app.use(express.json());
@@ -27,22 +29,30 @@ app.post('/search', async (req, res) => {
   }
 
   try {
-    const googleApiUrl = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CSE_ID}&q=${encodeURIComponent(searchQuery)}`;
+    const searchQuery = req.body.query;
+    console.log(`middleware running with search: ${searchQuery}`)
 
-    const response = await axios.get(googleApiUrl);
-    const searchData = response.data;
+    const completion = await openai.chat.completions.create({
+        model: "gpt-4.1",
+        messages: [
+            {
+                role: "system",
+                content: "You are an expert in ethics. Only answer questions that are related to ethics, law, morality, or philosophy. Return everyting except the polite AI words on beginning and ending. If the question is unrelated to ethics, respond: 'I'm sorry, but I can only provide answers related to ethics."
+            },
+            {
+                role: "user",
+                content: searchQuery
+            }
+        ]
+    })
 
-    const results = searchData.items ? searchData.items.map(item => ({
-      title: item.title,
-      url: item.link,
-      snippet: item.snippet,
-    })) : [];
+    const result = completion.choices[0].message.content
 
-    res.json({ results });
+    console.log(result)
+
+    return res.json({ result })
 
   } catch (error) {
-    console.error('Error fetching from Google Search API:', error.message);
-    console.error('Google API error response:', error.response ? error.response.data : 'No response data');
     res.status(500).json({ error: 'Error fetching search results.' });
   }
 });
